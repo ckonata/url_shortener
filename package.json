@@ -1,0 +1,25 @@
+{
+  "name": "url_shortener",
+  "version": "1.0.0",
+  "description": "Transform long urls into short ones",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ckonata/url_shortener.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ckonata/url_shortener/issues"
+  },
+  "homepage": "https://github.com/ckonata/url_shortener#readme",
+  "devDependencies": {
+    "@types/node": "^20.1.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
