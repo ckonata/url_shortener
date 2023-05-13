@@ -1,13 +1,14 @@
+import 'dotenv/config';
 import Knex from 'knex';
 
 const knex = Knex({
   client: 'postgresql',
   connection: {
-    host: 'localhost',
-    port: 5432,
-    user: 'postgres',
-    password: 'admin',
-    database: 'url_shortener',
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DATABASE,
   }
 });
 
