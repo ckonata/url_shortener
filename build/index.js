@@ -1,3 +1,4 @@
 "use strict";
-const sum = (a, b) => a + b;
-console.log(sum(1, 2));
+Object.defineProperty(exports, "__esModule", { value: true });
+const knex_1 = require("./config/knex");
+(0, knex_1.onDatabaseConnection)().then(() => { console.log('Database connection established'); });
