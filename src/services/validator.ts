@@ -1,4 +1,5 @@
 import Validator from "validatorjs";
+import httpError from "http-errors";
 
 type RequestBody = { [key: string]: any };
 
@@ -16,7 +17,7 @@ const validationSchema = (
       concatenatedErrors.push(validation.errors.first(key) as string);
     });
 
-    throw new Error(concatenatedErrors.join(" . "));
+    throw new httpError.BadRequest(concatenatedErrors.join(" . "));
   } else {
     console.log("Validations passed");
   }
