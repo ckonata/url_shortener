@@ -2,7 +2,7 @@ import { comparePassword, hashPassword } from "./../config/encryption";
 import { validateLogin, validateRegister } from "./validator";
 import knex from "../config/knex";
 import httpError from "http-errors";
-import { compareSync } from "bcryptjs";
+import { generateToken } from "../config/jwt";
 
 export const getUser = async (username: string) =>
   knex("users").whereRaw("LOWER(username) = LOWER(?)", [username]).first();
@@ -34,12 +34,27 @@ export const login = async (body: { username: string; password: string }) => {
   validateLogin(body);
 
   const user = await getUser(body.username);
+  console.log("user", user);
 
-  if(!user) throw new httpError.Unauthorized("Username or password are incorrect.");
+  if (!user)
+    throw new httpError.Unauthorized("Username or password are incorrect.");
 
-  const passwordAreEquals = await comparePassword(await hashPassword(body.password), user.password);
+  const passwordAreEquals = await comparePassword(body.password, user.password);
 
-  if(!passwordAreEquals) throw new httpError.Unauthorized("Username or password are incorrect.");
+  console.log("passwordareequals", passwordAreEquals);
 
-  return user;
+  if (!passwordAreEquals)
+    throw new httpError.Unauthorized("Username or password are incorrect.");
+
+  const token = await generateToken({ id: user.id });
+
+  return {
+    user: {
+      id: user.id,
+      username: user.username,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    },
+    token,
+  };
 };
