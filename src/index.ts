@@ -1,4 +1,5 @@
 import knex, { onDatabaseConnection } from "./config/knex";
+import { register } from "./services/user";
 
 const main = async () => {
   try {
@@ -12,8 +13,8 @@ const main = async () => {
     //  user_id: 1,
     // }, "*")
 
-    const urls = await knex("urls").select("*");
-    console.log(urls);
+    const user = await register({username: "julian", password: "pass123"});
+    console.log(user)
   } catch (err) {
     console.log(err);
   }

@@ -1,3 +1,4 @@
+import { hashPassword } from './../config/encryption';
 import { validateRegister } from "./validator";
 import knex from "../config/knex";
 import httpError from "http-errors";
@@ -18,7 +19,7 @@ export const register = async (body: {
     await knex("users").insert(
       {
         username: body.username,
-        password: body.password,
+        password: await hashPassword(body.password),
       },
       ["id", "username"]
     )
