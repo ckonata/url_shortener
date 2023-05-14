@@ -4,6 +4,7 @@
   "description": "Transform long urls into short ones",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,6 +32,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "knex": "^2.4.2",
+    "nodemon": "^2.0.22",
     "pg": "^8.10.0"
   }
 }
