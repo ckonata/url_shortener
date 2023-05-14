@@ -1,3 +1,4 @@
+import { registerVisit } from "./visits";
 import { validateCreateShortUrl, validateUpdateShortUrl } from "./validator";
 import httpError from "http-errors";
 import knex from "../config/knex";
@@ -26,10 +27,11 @@ export const createShortUrl = async (
     return results[0];
   }
 };
-export const resolverUrl = async (id: string) => {
+export const resolveUrl = async (id: string, ip: string) => {
   const url = await knex("urls").where({ id }).select(["url"]).first();
   if (!url) throw new httpError.NotFound("Id provided is not a valid url");
 
+  await registerVisit(id, ip);
   return url.url;
 };
 
@@ -73,8 +75,17 @@ export const getUrls = async (
 ) => {
   const urls = knex("urls")
     .where({ user_id })
+    .leftJoin("visits", "urls.id", "visits.url_id")
+    .select([
+      "urls.id",
+      "urls.ulr",
+      "urls.created_at",
+      knex.raw("count(visits.id) as visits_count"),
+    ])
     .limit(limit || 15)
-    .offset(offset || 0);
+    .offset(offset || 0)
+    .groupBy("urls.id")
+    .orderBy("urls.created_at", "desc");
 
   if (!urls) throw new httpError.NotFound("Do no exist urls for this user.");
 
