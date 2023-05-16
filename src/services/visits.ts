@@ -9,13 +9,15 @@ export const getLastVisits = async (
   limit: number,
   offset: number
 ) => {
-  await knex("visits")
+  const results = await knex("visits")
     .join("urls", "urls.id", "visits.url_id")
     .select(["urls.id", "urls.url", "visits.ip", "visits.created_at"])
     .where({ user_id })
     .limit(limit || 15)
     .offset(offset || 0)
     .orderBy("visits.created_at", "desc");
+
+  return results;
 };
 
 export const getVisitsByUrl = async (
@@ -36,9 +38,11 @@ export const getVisitsByUrl = async (
       "You are not allowed to view this resource."
     );
 
-  const result = knex("visits")
+  const result = await knex("visits")
     .where({ url_id })
     .limit(limit || 15)
     .offset(offset || 0)
     .orderBy("created_at", "desc");
+
+  return result;
 };

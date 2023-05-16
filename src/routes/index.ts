@@ -13,7 +13,11 @@ router.use(
   urlRouter.routes(),
   urlRouter.allowedMethods()
 );
-router.use("/visits", visitsRouter.routes(), visitsRouter.allowedMethods());
-
+router.use(
+  "/visits",
+  requireOfHandler,
+  visitsRouter.routes(),
+  visitsRouter.allowedMethods()
+);
 
 export default router;
