@@ -1,3 +1,4 @@
+import { resolveUrl } from "./../services/url";
 import Router from "@koa/router";
 import { authRouter } from "./auth";
 import { requireOfHandler } from "./middleware";
@@ -19,5 +20,14 @@ router.use(
   visitsRouter.routes(),
   visitsRouter.allowedMethods()
 );
+
+router.get("/:id", async (context) => {
+  const url = await resolveUrl(
+    context.params.id,
+    context.request.ip
+  );
+
+  context.redirect(url);
+});
 
 export default router;

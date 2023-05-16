@@ -1,5 +1,4 @@
 import Router from "@koa/router";
-import router from ".";
 import { getLastVisits, getVisitsByUrl } from "../services/visits";
 
 const visitsRouter = new Router();
