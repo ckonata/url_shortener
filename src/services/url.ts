@@ -14,19 +14,22 @@ export const createShortUrl = async (
     if (current_record) {
       throw new httpError.Conflict("Id provided already exists");
     }
+  }
 
-    const results = await knex("url").insert(
+  const results = (
+    await knex("urls").insert(
       {
-        url: body.url,
         id: body.id,
+        url: body.url,
         user_id,
       },
       "*"
-    );
+    )
+  )[0];
 
-    return results[0];
-  }
+  return results;
 };
+
 export const resolveUrl = async (id: string, ip: string) => {
   const url = await knex("urls").where({ id }).select(["url"]).first();
   if (!url) throw new httpError.NotFound("Id provided is not a valid url");
@@ -51,6 +54,7 @@ export const updateUrls = async (
     );
 
   var result = await knex("urls").where({ id }).update({ url: body.url }, "*");
+
   return result[0];
 };
 
@@ -73,12 +77,12 @@ export const getUrls = async (
   limit: number,
   offset: number
 ) => {
-  const urls = knex("urls")
+  const urls = await knex("urls")
     .where({ user_id })
     .leftJoin("visits", "urls.id", "visits.url_id")
     .select([
       "urls.id",
-      "urls.ulr",
+      "urls.url",
       "urls.created_at",
       knex.raw("count(visits.id) as visits_count"),
     ])
@@ -86,8 +90,6 @@ export const getUrls = async (
     .offset(offset || 0)
     .groupBy("urls.id")
     .orderBy("urls.created_at", "desc");
-
-  if (!urls) throw new httpError.NotFound("Do no exist urls for this user.");
 
   return urls;
 };

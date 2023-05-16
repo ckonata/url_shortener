@@ -34,14 +34,11 @@ export const login = async (body: { username: string; password: string }) => {
   validateLogin(body);
 
   const user = await getUser(body.username);
-  console.log("user", user);
 
   if (!user)
     throw new httpError.Unauthorized("Username or password are incorrect.");
 
   const passwordAreEquals = await comparePassword(body.password, user.password);
-
-  console.log("passwordareequals", passwordAreEquals);
 
   if (!passwordAreEquals)
     throw new httpError.Unauthorized("Username or password are incorrect.");

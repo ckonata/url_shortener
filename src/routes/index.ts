@@ -15,8 +15,5 @@ router.use(
 );
 router.use("/visits", visitsRouter.routes(), visitsRouter.allowedMethods());
 
-router.use("/urls");
-
-router.use("/visits");
 
 export default router;
