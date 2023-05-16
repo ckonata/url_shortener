@@ -26,7 +26,7 @@ const validationSchema = (
 export const validateCreateShortUrl = (body: RequestBody) =>
   validationSchema(body, {
     url: "url|required",
-    id: "string|min:5|max:10",
+    id: "string|min:5|max:10|not_in:urls,visits,auth",
   });
 
 export const validateUpdateShortUrl = (body: RequestBody) =>
