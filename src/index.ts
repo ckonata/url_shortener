@@ -1,13 +1,19 @@
-import knex, { onDatabaseConnection } from "./config/knex";
-import { login, register } from "./services/user";
+import { onDatabaseConnection } from "./config/knex";
+import Koa from "koa";
+import cors from "@koa/cors";
+import helmet from "koa-helmet";
+import bodyParser from "koa-bodyparser";
 
+const app = new Koa();
 const main = async () => {
   try {
     await onDatabaseConnection();
-    console.log("Database connection established");
-    //const user = await register({username: "cajulian", password: "123pass"});
-    const user = await login({username: "cajulian", password: "123pass"})
-    console.log(user);
+
+    var port = process.env.PORT;
+
+    app.listen(Number(port), () => {
+      console.log(`Server started in port ${port}`);
+    });
   } catch (err) {
     console.log(err);
   }
