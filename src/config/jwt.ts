@@ -9,7 +9,7 @@ export const generateToken = async (payload: { [key: string]: any }) =>
 export const validateJwt = async (token: string) => {
   try {
     const content = jwt.verify(token, privateKey);
-    return content;
+    return content as  { [key: string]: any };
   } catch (e) {
    throw new httpError.Unauthorized("Please provide a valid token");
   }
